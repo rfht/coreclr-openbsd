@@ -1,5 +1,9 @@
 syntax: glob
 
+bin/
+BUILD
+TODO
+
 [Bb]inaries/
 
 # Build tools related files

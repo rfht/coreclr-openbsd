@@ -344,7 +344,7 @@ DWORD TP_CreateThread(THREAD_ID* tThread, LPTHREAD_START_ROUTINE worker,  LPVOID
         NULL,
         (MacWorker)worker,
         lpParameter);
-#ifdef MAC64
+#if defined(MAC64) || defined(__OpenBSD__)
     // This is a major kludge...64 bit posix threads just can't be cast into a DWORD and there just isn't
     // a great way to get what we're using for the ID. The fact that we're casting this at all is kind of
     // silly since we're returing the actual thread handle and everything being done to manipulate the thread

@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 2.8.12.2)
 
-if(CMAKE_SYSTEM_NAME STREQUAL Darwin OR CMAKE_SYSTEM_NAME STREQUAL FreeBSD)
+if(CMAKE_SYSTEM_NAME STREQUAL Darwin OR CMAKE_SYSTEM_NAME STREQUAL FreeBSD
+	OR CMAKE_SYSTEM_NAME STREQUAL OpenBSD)
   # On OSX and *BSD, we use the libunwind that's part of the OS
   set(CLR_CMAKE_USE_SYSTEM_LIBUNWIND 1)
-endif(CMAKE_SYSTEM_NAME STREQUAL Darwin OR CMAKE_SYSTEM_NAME STREQUAL FreeBSD)
+endif(CMAKE_SYSTEM_NAME STREQUAL Darwin OR CMAKE_SYSTEM_NAME STREQUAL FreeBSD
+	OR CMAKE_SYSTEM_NAME STREQUAL OpenBSD)
 
 if(NOT DEFINED ENV{ROOTFS_DIR})
   include_directories(SYSTEM /usr/local/include)
@@ -44,7 +46,7 @@ elseif(NOT CMAKE_SYSTEM_NAME STREQUAL Darwin)
     find_library(UNWIND NAMES unwind)
 
     if(UNWIND STREQUAL UNWIND-NOTFOUND)
-      message(FATAL_ERROR "Cannot find libunwind. Try installing libunwind8-dev or libunwind-devel.")
+      #message(FATAL_ERROR "Cannot find libunwind. Try installing libunwind8-dev or libunwind-devel.")
     endif()
 
     set(UNWIND_LIBS ${UNWIND_LIBS} ${UNWIND})
@@ -330,6 +332,17 @@ if(CMAKE_SYSTEM_NAME STREQUAL FreeBSD)
     ${INTL}
   )
 endif(CMAKE_SYSTEM_NAME STREQUAL FreeBSD)
+
+# add -lc++ and -lc++abi??
+if(CMAKE_SYSTEM_NAME STREQUAL OpenBSD)
+  find_library(INTL intl)
+  target_link_libraries(coreclrpal
+    pthread
+    ${INTL}
+    c++
+    c++abi
+  )
+endif(CMAKE_SYSTEM_NAME STREQUAL OpenBSD)
 
 if(CMAKE_SYSTEM_NAME STREQUAL Linux)
   if(CLR_CMAKE_PLATFORM_ALPINE_LINUX OR CLR_CMAKE_PLATFORM_ANDROID)

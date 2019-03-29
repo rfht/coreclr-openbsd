@@ -116,10 +116,10 @@ extern "C" DLL_EXPORT BOOL STDMETHODCALLTYPE MarshalPointer_Out(/*[out]*/ BOOL *
 	return true;
 }
 
-#pragma warning(push)
+//#pragma warning(push)
 #if _MSC_VER <= 1900
 // 'BOOL' forcing value to bool 'true' or 'false'
-#pragma warning(disable: 4800)
+//#pragma warning(disable: 4800)
 #endif
 
 extern "C" DLL_EXPORT bool STDMETHODCALLTYPE Marshal_As_In(/*[in]*/bool boolValue)
@@ -244,4 +244,4 @@ extern "C" DLL_EXPORT bool STDMETHODCALLTYPE Marshal_Ref_Struct_Variant(Contains
 }
 
 #endif
-#pragma warning(pop)
+//#pragma warning(pop)

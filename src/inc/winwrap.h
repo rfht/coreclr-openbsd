@@ -35,6 +35,10 @@
 #include <wincrypt.h>
 #include <specstrings.h>
 
+#ifdef __OpenBSD__
+#include <wchar.h>
+#endif
+
 #include "registrywrapper.h"
 #include "longfilepathwrappers.h"
 

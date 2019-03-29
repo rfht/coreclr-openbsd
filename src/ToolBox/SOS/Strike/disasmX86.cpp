@@ -11,6 +11,7 @@
 #include "util.h"
 #include "disasm.h"
 #include <dbghelp.h>
+#include <ctype.h>
 
 #include "../../../inc/corhdr.h"
 #include "../../../inc/cor.h"

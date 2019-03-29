@@ -76,6 +76,11 @@ initNonPortableDistroRid()
         nonPortableBuildID="freebsd.$__freebsd_version-${buildArch}"
     fi
 
+    if [ "$buildOs" = "OpenBSD" ]; then
+        __openbsd_version=`sysctl -n kern.osrelease`
+        nonPortableBuildID="openbsd.$__openbsd_version-${buildArch}"
+    fi
+
     if [ "${nonPortableBuildID}" != "" ]; then
         export __DistroRid=${nonPortableBuildID}
 
@@ -157,6 +162,8 @@ initDistroRidGlobal()
                 distroRid="osx-$buildArch"
             elif [ "$buildOs" = "FreeBSD" ]; then
                 distroRid="freebsd-$buildArch"
+	    elif [ "$buildOs" = "OpenBSD" ]; then
+		distroRid="openbsd-$buildArch"
             fi
         fi
 

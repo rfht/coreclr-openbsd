@@ -16,9 +16,9 @@
 #include <stdio.h>
 #include <signal.h>
 #include <errno.h>
-#include <sys/ucontext.h>
 #include <sys/utsname.h>
 #include <unistd.h>
+#include <sys/signal.h>
 
 enum
 {

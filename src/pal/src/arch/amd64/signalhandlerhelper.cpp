@@ -9,7 +9,7 @@ SET_DEFAULT_DEBUG_CHANNEL(EXCEPT); // some headers have code with asserts, so do
 #include "pal/context.h"
 #include "pal/signal.hpp"
 #include "pal/utils.h"
-#include <sys/ucontext.h>
+//#include <sys/ucontext.h>
 
 /*++
 Function :
@@ -27,7 +27,7 @@ Parameters :
 void ExecuteHandlerOnOriginalStack(int code, siginfo_t *siginfo, void *context, SignalHandlerWorkerReturnPoint* returnPoint)
 {
     ucontext_t *ucontext = (ucontext_t *)context;
-    size_t faultSp = (size_t)MCREG_Rsp(ucontext->uc_mcontext);
+    size_t faultSp = (size_t)ucontext->sc_rip;
 
     _ASSERTE(IS_ALIGNED(faultSp, 8));
 
@@ -46,8 +46,8 @@ void ExecuteHandlerOnOriginalStack(int code, siginfo_t *siginfo, void *context, 
     size_t* sp = (size_t*)ALIGN_DOWN(faultSp - 128, 16);
 
     // Build fake stack frame to enable the stack unwinder to unwind from signal_handler_worker to the faulting instruction
-    *--sp = (size_t)MCREG_Rip(ucontext->uc_mcontext);
-    *--sp = (size_t)MCREG_Rbp(ucontext->uc_mcontext);
+    *--sp = (size_t)ucontext->sc_rip;
+    *--sp = (size_t)ucontext->sc_rip;
     size_t fp = (size_t)sp;
     *--sp = fakeFrameReturnAddress;
 

@@ -12,7 +12,7 @@ if(NOT CLR_CMAKE_PLATFORM_ANDROID)
   list(APPEND COMMON_TEST_LIBRARIES m)
 endif()
 
-list(APPEND COMMON_TEST_LIBRARIES coreclrpal)
+list(APPEND COMMON_TEST_LIBRARIES coreclrpal c++ c++abi)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   add_compile_options(-Wno-incompatible-pointer-types-discards-qualifiers)

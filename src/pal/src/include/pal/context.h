@@ -35,9 +35,33 @@ extern "C"
 #if HAVE_UCONTEXT_T
 #include <ucontext.h>
 
-typedef ucontext_t native_context_t;
 #else   // HAVE_UCONTEXT_T
-#error Native context type is not known on this platform!
+//#error Native context type is not known on this platform!
+#include <sys/signal.h>
+#include <amd64/fpu.h>
+struct obsd_ctx {
+	ucontext_t	uc_mcontext;
+	savefpu		sfp;
+};
+
+#define _REG_R0  0
+#define _REG_R1  1
+#define _REG_R2  2
+#define _REG_R3  3
+#define _REG_R4  4
+#define _REG_R5  5
+#define _REG_R6  6
+#define _REG_R7  7
+#define _REG_R8  8
+#define _REG_R9  9
+#define _REG_R10 10
+#define _REG_R11 11
+#define _REG_R12 12
+#define _REG_R13 13
+#define _REG_R14 14
+#define _REG_R15 15
+
+typedef obsd_ctx native_context_t;
 #endif  // HAVE_UCONTEXT_T
 
 #if defined(XSTATE_SUPPORTED) && !HAVE_PUBLIC_XSTATE_STRUCT
@@ -279,40 +303,41 @@ inline void *FPREG_Xstate_Ymmh(const ucontext_t *uc)
 #define MCREG_Cpsr(mc)    ((mc).pstate)
 #else
     // For FreeBSD, as found in x86/ucontext.h
-#define MCREG_Rbp(mc)	    ((mc).mc_rbp)
-#define MCREG_Rip(mc)	    ((mc).mc_rip)
-#define MCREG_Rsp(mc)	    ((mc).mc_rsp)
-#define MCREG_Rsi(mc)       ((mc).mc_rsi)
-#define MCREG_Rdi(mc)	    ((mc).mc_rdi)
-#define MCREG_Rbx(mc)	    ((mc).mc_rbx)
-#define MCREG_Rdx(mc)	    ((mc).mc_rdx)
-#define MCREG_Rcx(mc)	    ((mc).mc_rcx)
-#define MCREG_Rax(mc)	    ((mc).mc_rax)
-#define MCREG_R8(mc)	    ((mc).mc_r8)
-#define MCREG_R9(mc)	    ((mc).mc_r9)
-#define MCREG_R10(mc)	    ((mc).mc_r10)
-#define MCREG_R11(mc)	    ((mc).mc_r11)
-#define MCREG_R12(mc)	    ((mc).mc_r12)
-#define MCREG_R13(mc)	    ((mc).mc_r13)
-#define MCREG_R14(mc)	    ((mc).mc_r14)
-#define MCREG_R15(mc)	    ((mc).mc_r15)
-#define MCREG_EFlags(mc)    ((mc).mc_rflags)
-#define MCREG_SegCs(mc)     ((mc).mc_cs)
+    // For OpenBSD, as found in /usr/include/amd64/signal.h
+#define MCREG_Rbp(mc)	    ((mc).sc_rbp)
+#define MCREG_Rip(mc)	    ((mc).sc_rip)
+#define MCREG_Rsp(mc)	    ((mc).sc_rsp)
+#define MCREG_Rsi(mc)       ((mc).sc_rsi)
+#define MCREG_Rdi(mc)	    ((mc).sc_rdi)
+#define MCREG_Rbx(mc)	    ((mc).sc_rbx)
+#define MCREG_Rdx(mc)	    ((mc).sc_rdx)
+#define MCREG_Rcx(mc)	    ((mc).sc_rcx)
+#define MCREG_Rax(mc)	    ((mc).sc_rax)
+#define MCREG_R8(mc)	    ((mc).sc_r8)
+#define MCREG_R9(mc)	    ((mc).sc_r9)
+#define MCREG_R10(mc)	    ((mc).sc_r10)
+#define MCREG_R11(mc)	    ((mc).sc_r11)
+#define MCREG_R12(mc)	    ((mc).sc_r12)
+#define MCREG_R13(mc)	    ((mc).sc_r13)
+#define MCREG_R14(mc)	    ((mc).sc_r14)
+#define MCREG_R15(mc)	    ((mc).sc_r15)
+#define MCREG_EFlags(mc)    ((mc).sc_rflags)
+#define MCREG_SegCs(mc)     ((mc).sc_cs)
 
   // from x86/fpu.h: struct __envxmm64
-#define FPSTATE(uc)             ((savefpu*)((uc)->uc_mcontext.mc_fpstate))
-#define FPREG_ControlWord(uc)   FPSTATE(uc)->sv_env.en_cw
-#define FPREG_StatusWord(uc)    FPSTATE(uc)->sv_env.en_sw
-#define FPREG_TagWord(uc)       FPSTATE(uc)->sv_env.en_tw
-#define FPREG_MxCsr(uc)         FPSTATE(uc)->sv_env.en_mxcsr
-#define FPREG_MxCsr_Mask(uc)    FPSTATE(uc)->sv_env.en_mxcsr_mask
-#define FPREG_ErrorOffset(uc)   *(DWORD*) &(FPSTATE(uc)->sv_env.en_rip)
-#define FPREG_ErrorSelector(uc) *((WORD*) &(FPSTATE(uc)->sv_env.en_rip) + 2)
-#define FPREG_DataOffset(uc)    *(DWORD*) &(FPSTATE(uc)->sv_env.en_rdp)
-#define FPREG_DataSelector(uc)  *((WORD*) &(FPSTATE(uc)->sv_env.en_rdp) + 2)
+#define FPSTATE(uc)             ((savefpu*)((uc)->fp_xstate))
+#define FPREG_ControlWord(uc)   uc->sfp.fp_fxsave.fx_fcw //FPSTATE(uc)->sv_env.en_cw
+#define FPREG_StatusWord(uc)    uc->sfp.fp_ex_sw //FPSTATE(uc)->sv_env.en_sw
+#define FPREG_TagWord(uc)       uc->sfp.fp_ex_tw //FPSTATE(uc)->sv_env.en_tw
+#define FPREG_MxCsr(uc)         uc->sfp.fp_fxsave.fx_mxcsr //FPSTATE(uc)->sv_env.en_mxcsr
+#define FPREG_MxCsr_Mask(uc)    uc->sfp.fp_fxsave.fx_mxcsr_mask //FPSTATE(uc)->sv_env.en_mxcsr_mask
+#define FPREG_ErrorOffset(uc)   *(DWORD*) &(uc->sfp.fp_fxsave.fx_rip) //&(FPSTATE(uc)->sv_env.en_rip)
+#define FPREG_ErrorSelector(uc) *((WORD*) &(uc->sfp.fp_fxsave.fx_rip) + 2) //&(FPSTATE(uc)->sv_env.en_rip) + 2)
+#define FPREG_DataOffset(uc)    *(DWORD*) &(uc->sfp.fp_fxsave.fx_rdp) //&(FPSTATE(uc)->sv_env.en_rdp)
+#define FPREG_DataSelector(uc)  *((WORD*) &(uc->sfp.fp_fxsave.fx_rdp) + 2) //&(FPSTATE(uc)->sv_env.en_rdp) + 2)
 
-#define FPREG_Xmm(uc, index)    *(M128A*) &(FPSTATE(uc)->sv_xmm[index])
-#define FPREG_St(uc, index)     *(M128A*) &(FPSTATE(uc)->sv_fp[index].fp_acc)
+#define FPREG_Xmm(uc, index)    *(M128A*) &(uc->sfp.fp_fxsave.fx_xmm) //&(FPSTATE(uc)->sv_xmm[index])
+#define FPREG_St(uc, index)     *(M128A*) &(uc->sfp.fp_fxsave.fx_st) //&(FPSTATE(uc)->sv_fp[index].fp_acc)
 #endif
 
 #else // BIT64
@@ -647,7 +672,7 @@ Return value :
     None
 
 --*/
-void CONTEXTFromNativeContext(const native_context_t *native, LPCONTEXT lpContext,
+void CONTEXTFromNativeContext(const obsd_ctx *native, LPCONTEXT lpContext,
                               ULONG contextFlags);
 
 /*++

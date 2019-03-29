@@ -8,5 +8,5 @@ _add_library(unixcoreruncommon
 )
 
 if(CLR_CMAKE_PLATFORM_LINUX)
-  target_link_libraries(unixcoreruncommon dl)
+  target_link_libraries(unixcoreruncommon)
 endif(CLR_CMAKE_PLATFORM_LINUX)

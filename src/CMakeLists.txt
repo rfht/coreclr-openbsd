@@ -1,3 +1,4 @@
+set(CMAKE_VERBOSE_MAKEFILE ON)
 include_directories("inc")
 include_directories("strongname/inc")
 include_directories("inc/winrt")

@@ -741,8 +741,8 @@ enum gc_join_flavor
 };
   
 #define first_thread_arrived 2
-#pragma warning(push)
-#pragma warning(disable:4324) // don't complain if DECLSPEC_ALIGN actually pads
+//#pragma warning(push)
+//#pragma warning(disable:4324) // don't complain if DECLSPEC_ALIGN actually pads
 struct DECLSPEC_ALIGN(HS_CACHE_LINE_SIZE) join_structure
 {
     // Shared non volatile keep on separate line to prevent eviction
@@ -761,7 +761,7 @@ struct DECLSPEC_ALIGN(HS_CACHE_LINE_SIZE) join_structure
     VOLATILE(int32_t) r_join_lock;
 
 };
-#pragma warning(pop)
+//#pragma warning(pop)
 
 enum join_type 
 {
@@ -1539,7 +1539,7 @@ BOOL recursive_gc_sync::allow_foreground()
 
 #if  defined(COUNT_CYCLES)
 #ifdef _MSC_VER
-#pragma warning(disable:4035)
+//#pragma warning(disable:4035)
 #endif //_MSC_VER
 
 static
@@ -1551,7 +1551,7 @@ __asm   _emit   0x31
 __asm   pop     EDX
 };
 
-#pragma warning(default:4035)
+//#pragma warning(default:4035)
 
 #endif //COUNT_CYCLES
 
@@ -4627,7 +4627,7 @@ gc_heap::compute_new_ephemeral_size()
 }
 
 #ifdef _MSC_VER
-#pragma warning(disable:4706) // "assignment within conditional expression" is intentional in this function.
+//#pragma warning(disable:4706) // "assignment within conditional expression" is intentional in this function.
 #endif // _MSC_VER
 
 heap_segment*
@@ -4747,7 +4747,7 @@ gc_heap::soh_get_segment_to_expand()
 }
 
 #ifdef _MSC_VER
-#pragma warning(default:4706)
+//#pragma warning(default:4706)
 #endif // _MSC_VER
 
 //returns 0 in case of allocation failure
@@ -4994,12 +4994,12 @@ BOOL gc_heap::unprotect_segment (heap_segment* seg)
 #ifdef MULTIPLE_HEAPS
 #ifdef _X86_
 #ifdef _MSC_VER
-#pragma warning(disable:4035)
+//#pragma warning(disable:4035)
     static ptrdiff_t  get_cycle_count()
     {
         __asm   rdtsc
     }
-#pragma warning(default:4035)
+//#pragma warning(default:4035)
 #elif defined(__GNUC__)
     static ptrdiff_t  get_cycle_count()
     {
@@ -5372,7 +5372,7 @@ bool gc_heap::create_gc_thread ()
 }
 
 #ifdef _MSC_VER
-#pragma warning(disable:4715) //IA64 xcompiler recognizes that without the 'break;' the while(1) will never end and therefore not return a value for that code path
+//#pragma warning(disable:4715) //IA64 xcompiler recognizes that without the 'break;' the while(1) will never end and therefore not return a value for that code path
 #endif //_MSC_VER
 void gc_heap::gc_thread_function ()
 {
@@ -5485,7 +5485,7 @@ void gc_heap::gc_thread_function ()
     }
 }
 #ifdef _MSC_VER
-#pragma warning(default:4715) //IA64 xcompiler recognizes that without the 'break;' the while(1) will never end and therefore not return a value for that code path
+//#pragma warning(default:4715) //IA64 xcompiler recognizes that without the 'break;' the while(1) will never end and therefore not return a value for that code path
 #endif //_MSC_VER
 
 #endif //MULTIPLE_HEAPS
@@ -10159,8 +10159,8 @@ HRESULT gc_heap::initialize_gc (size_t segment_size,
         return E_OUTOFMEMORY;
 
 #ifdef _PREFAST_ 
-#pragma warning(push)
-#pragma warning(disable:22011) // Suppress PREFast warning about integer underflow/overflow
+//#pragma warning(push)
+//#pragma warning(disable:22011) // Suppress PREFast warning about integer underflow/overflow
 #endif // _PREFAST_
     g_promoted = new (nothrow) size_t [number_of_heaps*16];
     g_bpromoted = new (nothrow) size_t [number_of_heaps*16];
@@ -10168,7 +10168,7 @@ HRESULT gc_heap::initialize_gc (size_t segment_size,
     g_mark_stack_busy = new (nothrow) int[(number_of_heaps+2)*HS_CACHE_LINE_SIZE/sizeof(int)];
 #endif //MH_SC_MARK
 #ifdef _PREFAST_ 
-#pragma warning(pop)
+//#pragma warning(pop)
 #endif // _PREFAST_
     if (!g_promoted || !g_bpromoted)
         return E_OUTOFMEMORY;
@@ -10358,12 +10358,12 @@ gc_heap* gc_heap::make_gc_heap (
         return 0;
 
 #ifdef _PREFAST_ 
-#pragma warning(push)
-#pragma warning(disable:22011) // Suppress PREFast warning about integer underflow/overflow
+//#pragma warning(push)
+//#pragma warning(disable:22011) // Suppress PREFast warning about integer underflow/overflow
 #endif // _PREFAST_
     res->mark_list_piece_end = new (nothrow) uint8_t**[n_heaps + 32]; // +32 is padding to reduce false sharing
 #ifdef _PREFAST_ 
-#pragma warning(pop)
+//#pragma warning(pop)
 #endif // _PREFAST_
 
     if (!res->mark_list_piece_end)
@@ -12046,7 +12046,7 @@ BOOL gc_heap::short_on_end_of_seg (int gen_number,
 }
 
 #ifdef _MSC_VER
-#pragma warning(disable:4706) // "assignment within conditional expression" is intentional in this function.
+//#pragma warning(disable:4706) // "assignment within conditional expression" is intentional in this function.
 #endif // _MSC_VER
 
 inline
@@ -12303,7 +12303,7 @@ exit:
 }
 
 #ifdef _MSC_VER
-#pragma warning(default:4706)
+//#pragma warning(default:4706)
 #endif // _MSC_VER
 
 BOOL gc_heap::a_fit_segment_end_p (int gen_number,
@@ -14974,8 +14974,8 @@ size_t gc_heap::current_generation_size (int gen_number)
 }
 
 #ifdef _PREFAST_
-#pragma warning(push)
-#pragma warning(disable:6326) // "Potential comparison of a constant with another constant" is intentional in this function.
+//#pragma warning(push)
+//#pragma warning(disable:6326) // "Potential comparison of a constant with another constant" is intentional in this function.
 #endif //_PREFAST_
 
 /*
@@ -15510,7 +15510,7 @@ exit:
 }
 
 #ifdef _PREFAST_
-#pragma warning(pop)
+//#pragma warning(pop)
 #endif //_PREFAST_
 
 inline
@@ -21892,8 +21892,8 @@ void gc_heap::record_interesting_data_point (interesting_data_point idp)
 }
 
 #ifdef _PREFAST_
-#pragma warning(push)
-#pragma warning(disable:21000) // Suppress PREFast warning about overly large function
+//#pragma warning(push)
+//#pragma warning(disable:21000) // Suppress PREFast warning about overly large function
 #endif //_PREFAST_
 void gc_heap::plan_phase (int condemned_gen_number)
 {
@@ -23454,7 +23454,7 @@ void gc_heap::plan_phase (int condemned_gen_number)
     //verify_partial();
 }
 #ifdef _PREFAST_
-#pragma warning(pop)
+//#pragma warning(pop)
 #endif //_PREFAST_
 
 
@@ -25441,8 +25441,8 @@ void gc_heap::compact_phase (int condemned_gen_number,
 #ifdef MULTIPLE_HEAPS
 
 #ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable:4702) // C4702: unreachable code: gc_thread_function may not return
+//#pragma warning(push)
+//#pragma warning(disable:4702) // C4702: unreachable code: gc_thread_function may not return
 #endif //_MSC_VER
 void gc_heap::gc_thread_stub (void* arg)
 {
@@ -25473,7 +25473,7 @@ void gc_heap::gc_thread_stub (void* arg)
     heap->gc_thread_function();
 }
 #ifdef _MSC_VER
-#pragma warning(pop)
+//#pragma warning(pop)
 #endif //_MSC_VER
 
 #endif //MULTIPLE_HEAPS
@@ -25481,8 +25481,8 @@ void gc_heap::gc_thread_stub (void* arg)
 #ifdef BACKGROUND_GC
 
 #ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable:4702) // C4702: unreachable code: gc_thread_function may not return
+//#pragma warning(push)
+//#pragma warning(disable:4702) // C4702: unreachable code: gc_thread_function may not return
 #endif //_MSC_VER
 void gc_heap::bgc_thread_stub (void* arg)
 {
@@ -25492,7 +25492,7 @@ void gc_heap::bgc_thread_stub (void* arg)
     heap->bgc_thread_function();
 }
 #ifdef _MSC_VER
-#pragma warning(pop)
+//#pragma warning(pop)
 #endif //_MSC_VER
 
 #endif //BACKGROUND_GC

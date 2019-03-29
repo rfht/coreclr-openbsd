@@ -127,15 +127,15 @@
     PER_FUNCTION_BLOCK(usearch_last, libicui18n) \
     PER_FUNCTION_BLOCK(usearch_openFromCollator, libicui18n)
 
-#if HAVE_SET_MAX_VARIABLE
+//#if HAVE_SET_MAX_VARIABLE
 #define FOR_ALL_ICU_FUNCTIONS \
     FOR_ALL_UNCONDITIONAL_ICU_FUNCTIONS \
     PER_FUNCTION_BLOCK(ucol_setMaxVariable, libicui18n)
-#else
-#define FOR_ALL_ICU_FUNCTIONS \
-    FOR_ALL_UNCONDITIONAL_ICU_FUNCTIONS \
-    PER_FUNCTION_BLOCK(ucol_setVariableTop, libicui18n)
-#endif
+//#else
+//#define FOR_ALL_ICU_FUNCTIONS \
+    //FOR_ALL_UNCONDITIONAL_ICU_FUNCTIONS \
+    //PER_FUNCTION_BLOCK(ucol_setVariableTop, libicui18n)
+//#endif
 
 // Declare pointers to all the used ICU functions
 #define PER_FUNCTION_BLOCK(fn, lib) extern __typeof(fn)* fn##_ptr;
@@ -171,11 +171,11 @@ FOR_ALL_ICU_FUNCTIONS
 #define ucol_openRules(...) ucol_openRules_ptr(__VA_ARGS__)
 #define ucol_safeClone(...) ucol_safeClone_ptr(__VA_ARGS__)
 #define ucol_setAttribute(...) ucol_setAttribute_ptr(__VA_ARGS__)
-#if HAVE_SET_MAX_VARIABLE
+//#if HAVE_SET_MAX_VARIABLE
 #define ucol_setMaxVariable(...) ucol_setMaxVariable_ptr(__VA_ARGS__)
-#else
-#define ucol_setVariableTop(...) ucol_setVariableTop_ptr(__VA_ARGS__)
-#endif
+//#else
+//#define ucol_setVariableTop(...) ucol_setVariableTop_ptr(__VA_ARGS__)
+//#endif
 #define ucol_strcoll(...) ucol_strcoll_ptr(__VA_ARGS__)
 #define ucurr_forLocale(...) ucurr_forLocale_ptr(__VA_ARGS__)
 #define ucurr_getName(...) ucurr_getName_ptr(__VA_ARGS__)

@@ -31,7 +31,7 @@ SET_DEFAULT_DEBUG_CHANNEL(NUMA);
 
 #include <pthread.h>
 #include <dlfcn.h>
-#ifdef __FreeBSD__
+#if defined(__FreeBSD__) || defined(__OpenBSD__)
 #include <stdlib.h>
 #else
 #include <alloca.h>

@@ -89,6 +89,7 @@ endfunction()
 function(generate_exports_file)
   set(INPUT_LIST ${ARGN})
   list(GET INPUT_LIST -1 outputFilename)
+  message("DEBUG: in generate_exports, outputFilename: ${outputFilename}")
   list(REMOVE_AT INPUT_LIST -1)
 
   if(CMAKE_SYSTEM_NAME STREQUAL Darwin)

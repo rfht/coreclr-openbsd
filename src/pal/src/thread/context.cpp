@@ -29,9 +29,11 @@ SET_DEFAULT_DEBUG_CHANNEL(THREAD); // some headers have code with asserts, so do
 #include "pal/utils.h"
 #include "pal/virtual.h"
 
+#include <sys/types.h>
 #include <sys/ptrace.h> 
 #include <errno.h>
 #include <unistd.h>
+#include <sys/signal.h>
 
 extern PGET_GCMARKER_EXCEPTION_CODE g_getGcMarkerExceptionCode;
 
@@ -200,7 +202,8 @@ BOOL CONTEXT_GetRegisters(DWORD processId, LPCONTEXT lpContext)
     }
     else
     {
-        ucontext_t registers;
+        //ucontext_t registers;
+	obsd_ctx registers;
 #if HAVE_PT_REGS
         struct pt_regs ptrace_registers;
         if (ptrace((__ptrace_request)PT_GETREGS, processId, (caddr_t) &ptrace_registers, 0) == -1)
@@ -431,7 +434,7 @@ void CONTEXTToNativeContext(CONST CONTEXT *lpContext, native_context_t *native)
 
 #if HAVE_GREGSET_T || HAVE_GREGSET_T
 #if HAVE_GREGSET_T
-    if (native->uc_mcontext.fpregs == nullptr)
+    if (native->uctx.fpregs == nullptr)
 #elif HAVE___GREGSET_T
     if (native->uc_mcontext.__fpregs == nullptr)
 #endif
@@ -494,7 +497,7 @@ Return value :
     None
 
 --*/
-void CONTEXTFromNativeContext(const native_context_t *native, LPCONTEXT lpContext,
+void CONTEXTFromNativeContext(const obsd_ctx *native, LPCONTEXT lpContext,
                               ULONG contextFlags)
 {
     lpContext->ContextFlags = contextFlags;

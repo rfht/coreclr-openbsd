@@ -671,17 +671,17 @@ CorUnix::InternalCreateFile(
 #ifndef O_DIRECT
     if ( dwFlagsAndAttributes & FILE_FLAG_NO_BUFFERING )
     {
-#ifdef F_NOCACHE
-        if (-1 == fcntl(filed, F_NOCACHE, 1))
+//#ifdef F_NOCACHE
+        if (-1 == fcntl(filed, O_ASYNC, 1))
         {
             ASSERT("Can't set F_NOCACHE; fcntl() failed. errno is %d (%s)\n",
                errno, strerror(errno));
             palError = ERROR_INTERNAL_ERROR;
             goto done;
         }
-#else
-#error Insufficient support for uncached I/O on this platform
-#endif
+//#else
+//#error Insufficient support for uncached I/O on this platform
+//#endif
     }
 #endif
     

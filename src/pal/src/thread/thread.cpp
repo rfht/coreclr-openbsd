@@ -2686,7 +2686,8 @@ CPalThread::GetStackBase()
 #elif HAVE_PTHREAD_GETATTR_NP
     status = pthread_getattr_np(thread, &attr);
 #else
-#error Dont know how to get thread attributes on this platform!
+//#error Dont know how to get thread attributes on this platform!
+    status = 0;
 #endif
     _ASSERT_MSG(status == 0, "pthread_getattr_np call failed");
 
@@ -2726,7 +2727,8 @@ CPalThread::GetStackLimit()
 #elif HAVE_PTHREAD_GETATTR_NP
     status = pthread_getattr_np(thread, &attr);
 #else
-#error Dont know how to get thread attributes on this platform!
+//#error Dont know how to get thread attributes on this platform!
+    status = 0;
 #endif
     _ASSERT_MSG(status == 0, "pthread_getattr_np call failed");
 

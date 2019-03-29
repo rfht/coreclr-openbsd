@@ -98,6 +98,10 @@ case $OSName in
         __PKG_RID=freebsd
         OS=FreeBSD
         ;;
+    OpenBSD)
+	__PKG_RID=openbsd
+	OS=OpenBSD
+	;;
     Linux)
         __PKG_RID=linux
         OS=Linux

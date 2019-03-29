@@ -1,5 +1,7 @@
 project(System.Globalization.Native C)
 
+set(CMAKE_VERBOSE_MAKEFILE ON)
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 add_definitions(-DPIC=1)
@@ -72,7 +74,8 @@ set_target_properties(System.Globalization.Native_Static PROPERTIES PREFIX "")
 set_target_properties(System.Globalization.Native_Static PROPERTIES OUTPUT_NAME System.Globalization.Native)
 
 if(NOT CLR_CMAKE_PLATFORM_DARWIN)
-    if (NOT CMAKE_SYSTEM_NAME STREQUAL FreeBSD AND NOT CMAKE_SYSTEM_NAME STREQUAL NetBSD)
+    if (NOT CMAKE_SYSTEM_NAME STREQUAL FreeBSD AND NOT CMAKE_SYSTEM_NAME STREQUAL NetBSD
+	AND NOT CMAKE_SYSTEM_NAME STREQUAL OpenBSD)
         target_link_libraries(System.Globalization.Native
             dl
         )

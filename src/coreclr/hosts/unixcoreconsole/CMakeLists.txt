@@ -13,7 +13,8 @@ _add_executable(coreconsole
 )
 
 # FreeBSD and NetBSD implement dlopen(3) in libc
-if(NOT CMAKE_SYSTEM_NAME STREQUAL FreeBSD AND NOT CMAKE_SYSTEM_NAME STREQUAL NetBSD)
+if(NOT CMAKE_SYSTEM_NAME STREQUAL FreeBSD AND NOT CMAKE_SYSTEM_NAME STREQUAL NetBSD
+	AND NOT CMAKE_SYSTEM_NAME STREQUAL OpenBSD)
     target_link_libraries(coreconsole 
         dl
     )

@@ -36,6 +36,8 @@ Abstract:
 #ifndef __PAL_H__
 #define __PAL_H__
 
+#define time PAL_time
+
 #ifdef PAL_STDCPP_COMPAT
 #include <stddef.h>
 #include <stdio.h>
@@ -44,7 +46,7 @@ Abstract:
 #include <stdint.h>
 #include <string.h>
 #include <errno.h>
-#include <ctype.h>
+//#include <ctype.h>
 #endif
 
 #ifdef  __cplusplus
@@ -2475,9 +2477,9 @@ PALIMPORT BOOL PALAPI PAL_VirtualUnwindOutOfProc(CONTEXT *context, KNONVOLATILE_
 #define PAL_CS_NATIVE_DATA_SIZE 76
 #elif defined(__APPLE__) && defined(__x86_64__)
 #define PAL_CS_NATIVE_DATA_SIZE 120
-#elif defined(__FreeBSD__) && defined(_X86_)
+#elif (defined(__FreeBSD__) || defined(__OpenBSD__)) && defined(_X86_)
 #define PAL_CS_NATIVE_DATA_SIZE 12
-#elif defined(__FreeBSD__) && defined(__x86_64__)
+#elif (defined(__FreeBSD__) || defined(__OpenBSD__)) && defined(__x86_64__)
 #define PAL_CS_NATIVE_DATA_SIZE 24
 #elif defined(__linux__) && defined(_ARM_)
 #define PAL_CS_NATIVE_DATA_SIZE 80
@@ -4288,6 +4290,8 @@ SetThreadIdealProcessorEx(
 #endif // _AMD64_
 
 #endif // !PAL_STDCPP_COMPAT
+
+#define time		PAL_time
 
 #ifndef _CONST_RETURN
 #ifdef  __cplusplus

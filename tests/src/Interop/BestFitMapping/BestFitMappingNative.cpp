@@ -8,8 +8,8 @@
 #include <xplatform.h>
 #include <platformdefines.h>
 
-#pragma warning( push )
-#pragma warning( disable : 4996)
+//#pragma warning( push )
+//#pragma warning( disable : 4996)
 
 
 static int fails = 0; //record the fail numbers
@@ -474,4 +474,4 @@ extern "C" DLL_EXPORT void __cdecl DoSCallBack_LPSTR_InOutByRef(SCallBackInOutBy
     }
     CoreClrFree(pStr);
 }
-#pragma warning( pop )
+//#pragma warning( pop )

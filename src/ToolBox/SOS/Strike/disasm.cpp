@@ -13,6 +13,7 @@
 #include "util.h"
 #include <dbghelp.h>
 #include <limits.h>
+#include <ctype.h>
 
 #include "sos_md.h"
 

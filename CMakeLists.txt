@@ -1,6 +1,9 @@
 # Verify minimum required version
 cmake_minimum_required(VERSION 2.8.12)
 
+set(CMAKE_VERBOSE_MAKEFILE ON)
+add_definitions(-DPAL_STDCPP_COMPAT)
+
 if(CMAKE_VERSION VERSION_EQUAL 3.0 OR CMAKE_VERSION VERSION_GREATER 3.0)
     cmake_policy(SET CMP0042 NEW)
 endif()

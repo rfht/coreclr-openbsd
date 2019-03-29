@@ -450,7 +450,7 @@ size_t GetRestrictedPhysicalMemoryLimit()
 
     struct rlimit curr_rlimit;
     size_t rlimit_soft_limit = (size_t)RLIM_INFINITY;
-    if (getrlimit(RLIMIT_AS, &curr_rlimit) == 0)
+    if (getrlimit(RLIMIT_DATA, &curr_rlimit) == 0)
     {
         rlimit_soft_limit = curr_rlimit.rlim_cur;
     }

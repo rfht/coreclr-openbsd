@@ -70,6 +70,7 @@
 #include <list>   
 #endif // !FEATURE_PAL
 #include <wchar.h>
+#include <ctype.h>
 
 #include "platformspecific.h"
 

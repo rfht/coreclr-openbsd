@@ -34,6 +34,7 @@ SET_DEFAULT_DEBUG_CHANNEL(EXCEPT); // some headers have code with asserts, so do
 
 #include <errno.h>
 #include <signal.h>
+#include <sys/signal.h>
 
 #if !HAVE_MACH_EXCEPTIONS
 #include "pal/init.h"
@@ -42,16 +43,16 @@ SET_DEFAULT_DEBUG_CHANNEL(EXCEPT); // some headers have code with asserts, so do
 #include "pal/utils.h"
 
 #include <string.h>
-#include <sys/ucontext.h>
 #include <sys/utsname.h>
 #include <unistd.h>
 #include <sys/mman.h>
 
 #include "pal/context.h"
 
-#ifdef SIGRTMIN
-#define INJECT_ACTIVATION_SIGNAL SIGRTMIN
-#endif
+//#ifdef SIGRTMIN
+//#define INJECT_ACTIVATION_SIGNAL SIGRTMIN
+//#endif
+#define INJECT_ACTIVATION_SIGNAL SIGUSR1
 
 #if !defined(INJECT_ACTIVATION_SIGNAL) && defined(FEATURE_HIJACK)
 #error FEATURE_HIJACK requires INJECT_ACTIVATION_SIGNAL to be defined
