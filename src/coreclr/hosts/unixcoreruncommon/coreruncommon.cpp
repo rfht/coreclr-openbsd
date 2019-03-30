@@ -30,6 +30,8 @@
 #define SUCCEEDED(Status) ((Status) >= 0)
 #endif // !SUCCEEDED
 
+#include <iostream>
+
 // Name of the environment variable controlling server GC.
 // If set to 1, server GC is enabled on startup. If 0, server GC is
 // disabled. Server GC is off by default.
@@ -41,6 +43,8 @@ static const char* globalizationInvariantVar = "CORECLR_GLOBAL_INVARIANT";
 
 #if defined(__linux__)
 #define symlinkEntrypointExecutable "/proc/self/exe"
+#elif defined(__OpenBSD__)
+#define symlinkEntrypointExecutable "/tmp/coreclr-demo/runtime/corerun"
 #elif !defined(__APPLE__)
 #define symlinkEntrypointExecutable "/proc/curproc/exe"
 #endif
@@ -107,7 +111,7 @@ bool GetEntrypointExecutableAbsolutePath(std::string& entrypointExecutable)
 #else
     // On other OSs, return the symlink that will be resolved by GetAbsolutePath
     // to fetch the entrypoint EXE absolute path, inclusive of filename.
-    result = GetAbsolutePath(symlinkEntrypointExecutable, entrypointExecutable);
+    result = "/tmp/coreclr-demo/runtime/corerun";
 #endif 
 
     return result;
@@ -116,6 +120,9 @@ bool GetEntrypointExecutableAbsolutePath(std::string& entrypointExecutable)
 bool GetAbsolutePath(const char* path, std::string& absolutePath)
 {
     bool result = false;
+
+    // DEBUG
+    std::cout << "DEBUG: path: " << path << ", absolutePath: " << absolutePath << '\n';
 
     char realPath[PATH_MAX];
     if (realpath(path, realPath) != nullptr && realPath[0] != '\0')
@@ -145,6 +152,7 @@ bool GetDirectory(const char* absolutePath, std::string& directory)
 
 bool GetClrFilesAbsolutePath(const char* currentExePath, const char* clrFilesPath, std::string& clrFilesAbsolutePath)
 {
+    std::cout << "DEBUG: clrFilesPath: " << &clrFilesPath << '\n';
     std::string clrFilesRelativePath;
     const char* clrFilesPathLocal = clrFilesPath;
     if (clrFilesPathLocal == nullptr)
